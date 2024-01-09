@@ -3,6 +3,7 @@ int PS2_mode=1,Vx=0,Vy=0,dj1=45,dj2=45,dj3=45,Vw=0;
 
 void setup(){
   PS2_Setup();
+  Motor_Setup();
 }
 
 void loop(){
@@ -11,6 +12,6 @@ void loop(){
   Serial.println(Vw); 
   Serial.print("Vy="); 
   Serial.println(Vy); 
-  delay(100);
+  delay(50);
 }
 
