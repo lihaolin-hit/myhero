@@ -1,20 +1,22 @@
-/*#include "Arduino.h"
+#include "Arduino.h"
 //电机供电口和pwm引脚定义
-#define wheel_lf_forward 54
-#define wheel_lf_back 55
-#define wheel_lf_pwm 13
-//其余3个轮子待定义
-#define wheel_lb_forward 
-#define wheel_lb_back 
-#define wheel_lb_pwm 
+//电机供电口和pwm引脚定义
+//正反转未知，待上机调试后若相反，宏定义两个引脚数字对换
+#define wheel_lf_forward 55
+#define wheel_lf_back 57
+#define wheel_lf_pwm 12
 
-#define wheel_rf_forward 
-#define wheel_rf_back 
-#define wheel_rf_pwm 
+#define wheel_lb_forward 54
+#define wheel_lb_back 55
+#define wheel_lb_pwm 13
 
-#define wheel_rb_forward 
-#define wheel_rb_back 
-#define wheel_rb_pwm 
+#define wheel_rf_forward 60
+#define wheel_rf_back 61
+#define wheel_rf_pwm 10
+
+#define wheel_rb_forward 58
+#define wheel_rb_back 59
+#define wheel_rb_pwm 11
 
 void Motor_Setup() {
   pinMode(wheel_lf_forward,OUTPUT);
@@ -47,4 +49,4 @@ void Motor_Loop(uint8_t *Control_mode, uint8_t *vx, uint8_t *vy){
   digitalWrite(wheel_back, LOW);
   analogWrite(wheel_pwm, 255);
   
-}*/
+}
