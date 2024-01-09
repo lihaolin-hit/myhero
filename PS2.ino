@@ -21,7 +21,7 @@ void PS2_Setup(){
   Serial.begin(9600);        //开启串口，波特率9600    
   error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, true, true);//PS2控制
 }
-void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3){
+void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3,int *Vw){
   ps2x.read_gamepad(false, 0); //read controller and set large motor to spin at 'vibrate' speed
   if(ps2x.Button(PSB_TRIANGLE))   //主要混动模式  
       *Control_mode=1;
@@ -32,7 +32,12 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3){
   *vx=ps2x.Analog(PSS_LX)/10;  //读取L侧X轴的模拟值
   *vy=ps2x.Analog(PSS_LY)/10;  //读取L侧Y轴的模拟值
   *vx+=ps2x.Analog(PSS_RX)/10-24;  //读取R侧X轴的模拟值
-  *vy+=ps2x.Analog(PSS_RY)/10-24;  //读取R侧Y轴的模拟值   
+  *vy+=ps2x.Analog(PSS_RY)/10-24;  //读取R侧Y轴的模拟值
+  (*vy)=-(*vy); 
+  if((*vx==26))
+    (*vx)--;
+  if((*vy==-26))
+    (*vy)++;  
   if(ps2x.Button(PSB_PAD_UP)&&(*Control_mode!=2))   
       (*dj3)++;
     else if(ps2x.Button(PSB_PAD_DOWN)&&(*Control_mode!=2))  
@@ -48,7 +53,15 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3){
   if(*Control_mode==3){
     *vx=*vy=0;
   }
-
+  //角速度以逆时针方向为正
+  if(ps2x.Button(PSB_PAD_RIGHT))  
+      (*Vw)--;
+    else if(ps2x.Button(PSB_PAD_LEFT))  
+      (*Vw)++;
+    else if((*Vw)<0) 
+      (*Vw)++;
+    else if((*Vw)>0) 
+      (*Vw)--;
   /*冗余
       else if(ps2x.Button(PSB_CROSS)) ;
       else  Serial.println("  KEY_RELEASE");
@@ -56,10 +69,6 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3){
       Serial.println("  PSB_SELECT");
     else if(ps2x.Button(PSB_START))      
       Serial.println("  PSB_START"); 
-      if(ps2x.Button(PSB_PAD_RIGHT))  
-      Serial.println("  PSB_PAD_RIGHT");
-    else if(ps2x.Button(PSB_PAD_LEFT))  
-      Serial.println("  PSB_PAD_LEFT"); 
   */
 }
 
