@@ -1,4 +1,7 @@
 #include "Arduino.h"
+#define ab 1
+
+
 //电机供电口和pwm引脚定义
 //电机供电口和pwm引脚定义
 //正反转未知，待上机调试后若相反，宏定义两个引脚数字对换
@@ -44,9 +47,27 @@ void Motor_Setup() {
   analogWrite(wheel_rb_pwm,130);
 }
 
-void Motor_Loop(uint8_t *Control_mode, uint8_t *vx, uint8_t *vy){
-  digitalWrite(wheel_forward, HIGH);
-  digitalWrite(wheel_back, LOW);
-  analogWrite(wheel_pwm, 255);
-  
+void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *motor4){
+  //calc
+  *motor1=vy-vx+w*ab;
+  *motor2=vy+vx-w*ab;
+  *motor3=vy-vx-w*ab;
+  *motor4=vy+vx+w*ab;
+  //write
+  digitalWrite(wheel_rf_forward, HIGH);
+  digitalWrite(wheel_rf_back, LOW);
+  analogWrite(wheel_rf_pwm, *motor1);
+
+  digitalWrite(wheel_lf_forward, HIGH);
+  digitalWrite(wheel_lf_back, LOW);
+  analogWrite(wheel_lf_pwm, *motor2);
+
+  digitalWrite(wheel_lb_forward, HIGH);
+  digitalWrite(wheel_lb_back, LOW);
+  analogWrite(wheel_lb_pwm, *motor3);
+
+  digitalWrite(wheel_rb_forward, HIGH);
+  digitalWrite(wheel_rb_back, LOW);
+  analogWrite(wheel_rb_pwm, *motor4);
+
 }
