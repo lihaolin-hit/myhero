@@ -22,41 +22,56 @@
 #define wheel_rb_pwm 11
 
 void Motor_Setup() {
+  //两个引脚全部先拉低电平，PWM降到0
   pinMode(wheel_lf_forward,OUTPUT);
   pinMode(wheel_lf_back,OUTPUT);
   digitalWrite(wheel_lf_forward,LOW);
   digitalWrite(wheel_lf_back,LOW);
-  analogWrite(wheel_lf_pwm,130);
+  analogWrite(wheel_lf_pwm,0);
 
   pinMode(wheel_lb_forward,OUTPUT);
   pinMode(wheel_lb_back,OUTPUT);
   digitalWrite(wheel_lb_forward,LOW);
   digitalWrite(wheel_lb_back,LOW);
-  analogWrite(wheel_lb_pwm,130);
+  analogWrite(wheel_lb_pwm,0);
 
   pinMode(wheel_rf_forward,OUTPUT);
   pinMode(wheel_rf_back,OUTPUT);
   digitalWrite(wheel_rf_forward,LOW);
   digitalWrite(wheel_rf_back,LOW);
-  analogWrite(wheel_rf_pwm,130);
+  analogWrite(wheel_rf_pwm,0);
 
   pinMode(wheel_rb_forward,OUTPUT);
   pinMode(wheel_rb_back,OUTPUT);
   digitalWrite(wheel_rb_forward,LOW);
   digitalWrite(wheel_rb_back,LOW);
-  analogWrite(wheel_rb_pwm,130);
+  analogWrite(wheel_rb_pwm,0);
 }
 
-void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *motor4){
-  //calc
-  *motor1=vy-vx+w*ab;
-  *motor2=vy+vx-w*ab;
-  *motor3=vy-vx-w*ab;
-  *motor4=vy+vx+w*ab;
-  //write
-  digitalWrite(wheel_rf_forward, HIGH);
-  digitalWrite(wheel_rf_back, LOW);
-  analogWrite(wheel_rf_pwm, *motor1);
+void Motor_Loop(int vx,int vy,int w,uint8_t *motor1,uint8_t *motor2,uint8_t *motor3,uint8_t *motor4){
+  //计算每个电机分速度
+  int v1, v2, v3, v4;
+  v1 = (vy - vx + w * ab);
+  v2 = (vy + vx - w * ab);
+  v3 = (vy - vx - w * ab);
+  v4 = (vy + vx + w * ab);
+  // *motor1 = (uint8_t)(vy - vx + w * ab);
+  // *motor2 = (uint8_t)(vy + vx - w * ab);
+  // *motor3 = (uint8_t)(vy - vx - w * ab);
+  // *motor4 = (uint8_t)(vy + vx + w * ab);
+  //控制
+  if (v1 >= 0){
+    *motor1 = v1;
+    digitalWrite(wheel_rf_forward, HIGH);
+    digitalWrite(wheel_rf_back, LOW);
+    analogWrite(wheel_rf_pwm, *motor1);
+  }
+  else if (v1 < 0){
+    *motor1 = -v1;
+    digitalWrite(wheel_rf_forward, LOW);
+    digitalWrite(wheel_rf_back, HIGH);
+    analogWrite(wheel_rf_pwm, *motor1);
+  }
 
   digitalWrite(wheel_lf_forward, HIGH);
   digitalWrite(wheel_lf_back, LOW);
