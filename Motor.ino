@@ -1,11 +1,10 @@
 #include "Arduino.h"
 #define ab 1
 
-
 //电机供电口和pwm引脚定义
 //电机供电口和pwm引脚定义
 //正反转未知，待上机调试后若相反，宏定义两个引脚数字对换
-#define wheel_lf_forward 55
+#define wheel_lf_forward 56
 #define wheel_lf_back 57
 #define wheel_lf_pwm 12
 
