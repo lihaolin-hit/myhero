@@ -9,7 +9,7 @@ void setup(){
 void loop(){
   PS2_Loop(&PS2_mode,&Vx,&Vy,&dj1,&dj2,&dj3,&Vw);
   Motor_Loop(Vx,Vy,Vw,&motor1,&motor2,&motor3,&motor4);
-  /*Serial.print("Vw="); 
+  Serial.print("Vw="); 
   Serial.print(Vw); 
   Serial.print("  Vy="); 
   Serial.print(Vy);
@@ -18,7 +18,7 @@ void loop(){
   Serial.print("   motor1="); 
   Serial.print(motor1); 
   Serial.print("   motor2="); 
-  Serial.println(motor2); */
+  Serial.println(motor2); 
   delay(50);
 }
 
