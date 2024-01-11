@@ -47,7 +47,6 @@ void Motor_Setup() {
   digitalWrite(wheel_rb_back,LOW);
   analogWrite(wheel_rb_pwm,0);
 }
-
 void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *motor4){
   //计算每个电机分速度
   int v1, v2, v3, v4;
@@ -73,16 +72,43 @@ void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *mot
     analogWrite(wheel_rf_pwm, *motor1);
   }
 
-  digitalWrite(wheel_lf_forward, HIGH);
-  digitalWrite(wheel_lf_back, LOW);
-  analogWrite(wheel_lf_pwm, *motor2);
-
-  digitalWrite(wheel_lb_forward, HIGH);
-  digitalWrite(wheel_lb_back, LOW);
-  analogWrite(wheel_lb_pwm, *motor3);
-
-  digitalWrite(wheel_rb_forward, HIGH);
-  digitalWrite(wheel_rb_back, LOW);
-  analogWrite(wheel_rb_pwm, *motor4);
+  if (v2 >= 0){
+    *motor2 = v2;
+    digitalWrite(wheel_rf_forward, HIGH);
+    digitalWrite(wheel_rf_back, LOW);
+    analogWrite(wheel_rf_pwm, *motor2);
+  }
+  else if (v2 < 0){
+    *motor2 = -v2;
+    digitalWrite(wheel_rf_forward, LOW);
+    digitalWrite(wheel_rf_back, HIGH);
+    analogWrite(wheel_rf_pwm, *motor2);
+  }
+  
+  if (v3 >= 0){
+    *motor3 = v3;
+    digitalWrite(wheel_rf_forward, HIGH);
+    digitalWrite(wheel_rf_back, LOW);
+    analogWrite(wheel_rf_pwm, *motor3);
+  }
+  else if (v3 < 0){
+    *motor3 = -v3;
+    digitalWrite(wheel_rf_forward, LOW);
+    digitalWrite(wheel_rf_back, HIGH);
+    analogWrite(wheel_rf_pwm, *motor3);
+  }
+  
+  if (v4 >= 0){
+    *motor4 = v4;
+    digitalWrite(wheel_rf_forward, HIGH);
+    digitalWrite(wheel_rf_back, LOW);
+    analogWrite(wheel_rf_pwm, *motor4);
+  }
+  else if (v4 < 0){
+    *motor4 = -v4;
+    digitalWrite(wheel_rf_forward, LOW);
+    digitalWrite(wheel_rf_back, HIGH);
+    analogWrite(wheel_rf_pwm, *motor4);
+  }
 
 }
