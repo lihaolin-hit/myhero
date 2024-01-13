@@ -21,6 +21,13 @@ void PS2_Setup(){
   Serial.begin(9600);        //开启串口，波特率9600    
   error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, true, true);//PS2控制
 }
+
+void checkadd(int *froma,int maxi,int mini,int adder)
+{
+  int becomea=(*froma)+adder;
+  if((becomea<=maxi)&&(becomea>=mini))
+    *froma=becomea;
+}
 void PS2_Loop(int *Control_mode,int *vx,int *vy,int *servo_down,int *servo_mid,int *servo_up,int *vw){
   ps2x.read_gamepad(false, 0); //read controller and set large motor to spin at 'vibrate' speed
 
@@ -49,9 +56,9 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *servo_down,int *servo_mid,i
         else if (ps2x.Button(PSB_R2))         
           (*servo_mid)++;
       if (ps2x.Button(PSB_L1))  //上部摇杆向下       
-          (*servo_down)--;
+          checkadd(*servo_down,servo_down_max,servo_down_min,-1);
         else if (ps2x.Button(PSB_L2))          
-          (*servo_down)++;
+          checkadd(*servo_down,servo_down_max,servo_down_min,1);
 
       //角速度以逆时针方向为正
       if(ps2x.Button(PSB_PAD_RIGHT) && (*vw >= -20))
@@ -67,7 +74,7 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *servo_down,int *servo_mid,i
         else
            *vw = 0;
       }
-      
+
 
       else if(*Control_mode == 2)
       {
@@ -100,9 +107,9 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *servo_down,int *servo_mid,i
           else if(ps2x.Button(PSB_R2))         
             (*servo_mid)++;
         if(ps2x.Button(PSB_L1))  //上部摇杆向下       
-            (*servo_down)--;
+            checkadd(*servo_down,servo_down_max,servo_down_min,-1);
           else if(ps2x.Button(PSB_L2))          
-            (*servo_down)++;
+            checkadd(*servo_down,servo_down_max,servo_down_min,1);
       
       }
       /*冗余
