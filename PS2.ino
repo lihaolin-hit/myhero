@@ -21,7 +21,7 @@ void PS2_Setup(){
   Serial.begin(9600);        //开启串口，波特率9600    
   error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, true, true);//PS2控制
 }
-void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3,int *Vw){
+void PS2_Loop(int *Control_mode,int *vx,int *vy,int *servo_down,int *servo_mid,int *servo_up,int *vw){
   ps2x.read_gamepad(false, 0); //read controller and set large motor to spin at 'vibrate' speed
 
   if(ps2x.Button(PSB_CIRCLE))  //传统模式
@@ -41,32 +41,33 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3,int *
           (*vy)++;  
       
       if (ps2x.Button(PSB_PAD_UP))   
-          (*dj3)++;
+          (*servo_up)++;
         else if (ps2x.Button(PSB_PAD_DOWN))  
-          (*dj3)--;
+          (*servo_up)--;
       if (ps2x.Button(PSB_R1))        
-          (*dj2)--;
+          (*servo_mid)--;
         else if (ps2x.Button(PSB_R2))         
-          (*dj2)++;
+          (*servo_mid)++;
       if (ps2x.Button(PSB_L1))  //上部摇杆向下       
-          (*dj1)--;
+          (*servo_down)--;
         else if (ps2x.Button(PSB_L2))          
-          (*dj1)++;
+          (*servo_down)++;
 
       //角速度以逆时针方向为正
-      if(ps2x.Button(PSB_PAD_RIGHT) && (*Vw >= -20))
+      if(ps2x.Button(PSB_PAD_RIGHT) && (*vw >= -20))
         {
-          if(*Vw>0) (*Vw)=0;
-          (*Vw)-=5;
+          if(*vw>0) (*vw)=0;
+          (*vw)-=5;
         }
-        else if(ps2x.Button(PSB_PAD_LEFT) && (*Vw <= 20))
+        else if(ps2x.Button(PSB_PAD_LEFT) && (*vw <= 20))
         {
-          if(*Vw<0) (*Vw)=0;
-          (*Vw)+=5;
+          if(*vw<0) (*vw)=0;
+          (*vw)+=5;
         }  
         else
-           *Vw = 0;
+           *vw = 0;
       }
+      
 
       else if(*Control_mode == 2)
       {
@@ -77,31 +78,31 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3,int *
           else
             *vy = 0;
         
-        if(ps2x.Button(PSB_PAD_RIGHT) && (*Vw >= -20))
+        if(ps2x.Button(PSB_PAD_RIGHT) && (*vw >= -20))
         {
-          if(*Vw>0) (*Vw)=0;
-          (*Vw)-=5;
+          if(*vw>0) (*vw)=0;
+          (*vw)-=5;
         }
-        else if(ps2x.Button(PSB_PAD_LEFT) && (*Vw <= 20))
+        else if(ps2x.Button(PSB_PAD_LEFT) && (*vw <= 20))
         {
-          if(*Vw<0) (*Vw)=0;
-          (*Vw)+=5;
+          if(*vw<0) (*vw)=0;
+          (*vw)+=5;
         }  
         else
-           *Vw = 0;
+           *vw = 0;
         
         if(ps2x.Button(PSB_CROSS))   
-            (*dj3)++;
+            (*servo_up)++;
           else if(ps2x.Button(PSB_TRIANGLE))  
-            (*dj3)--;
+            (*servo_up)--;
         if(ps2x.Button(PSB_R1))        
-            (*dj2)--;
+            (*servo_mid)--;
           else if(ps2x.Button(PSB_R2))         
-            (*dj2)++;
+            (*servo_mid)++;
         if(ps2x.Button(PSB_L1))  //上部摇杆向下       
-            (*dj1)--;
+            (*servo_down)--;
           else if(ps2x.Button(PSB_L2))          
-            (*dj1)++;
+            (*servo_down)++;
       
       }
       /*冗余
