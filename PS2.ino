@@ -8,7 +8,7 @@ PS2X ps2x;                  // 创建控制对象
 *            53               CS
 *            52              SCLK
 *************************************************************/
-#define PS2_DAT        51    //MOSI
+#define PS2_DAT        51   //MOSI
 #define PS2_CMD        50    //MISO
 #define PS2_SEL        53    //CS
 #define PS2_CLK        52    //SCLK
@@ -28,7 +28,6 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3,int *
       *Control_mode=1;
     else if(ps2x.Button(PSB_SQUARE))   //新运动模式
       *Control_mode=2;
-  
   if(*Control_mode==1)
   {
       *vx=ps2x.Analog(PSS_LX)/10;  //读取L侧X轴的模拟值
@@ -36,50 +35,50 @@ void PS2_Loop(int *Control_mode,int *vx,int *vy,int *dj1,int *dj2,int *dj3,int *
       *vx+=ps2x.Analog(PSS_RX)/10-24;  //读取R侧X轴的模拟值
       *vy+=ps2x.Analog(PSS_RY)/10-24;  //读取R侧Y轴的模拟值
       (*vy)=-(*vy); 
-      if((*vx==26))
+      if (*vx == 26)
           (*vx)--;
-      if((*vy==-26))
+      else if (*vy == -26)
           (*vy)++;  
-      if(ps2x.Button(PSB_PAD_UP))   
+      if (ps2x.Button(PSB_PAD_UP))   
           (*dj3)++;
-        else if(ps2x.Button(PSB_PAD_DOWN))  
+        else if (ps2x.Button(PSB_PAD_DOWN))  
           (*dj3)--;
-      if(ps2x.Button(PSB_R1))        
+      if (ps2x.Button(PSB_R1))        
           (*dj2)--;
-        else if(ps2x.Button(PSB_R2))         
+        else if (ps2x.Button(PSB_R2))         
           (*dj2)++;
-      if(ps2x.Button(PSB_L1))  //上部摇杆向下       
+      if (ps2x.Button(PSB_L1))  //上部摇杆向下       
           (*dj1)--;
-        else if(ps2x.Button(PSB_L2))          
+        else if (ps2x.Button(PSB_L2))          
           (*dj1)++;
       //角速度以逆时针方向为正
-      if(ps2x.Button(PSB_PAD_RIGHT)&&((*Vw)>=-20))  
+      if(ps2x.Button(PSB_PAD_RIGHT) && (*Vw >= -20))  
           (*Vw)--;
-        else if(ps2x.Button(PSB_PAD_LEFT)&&((*Vw)<=20))  
+        else if(ps2x.Button(PSB_PAD_LEFT) && (*Vw <= 20))  
           (*Vw)++;
-        else if(((*Vw)<0)) 
-          (*Vw)++;
-        else if((*Vw)>0) 
-          (*Vw)--;
+        else if((!ps2x.Button(PSB_PAD_RIGHT)) && (!ps2x.Button(PSB_PAD_LEFT)) && *Vw != 0 ) 
+          *Vw = 0;
       }
-      else if(*Control_mode==2)
+      else if(*Control_mode == 2)
       {
-        if(ps2x.Button(PSB_PAD_UP)&&((*vx)<=20))   
-            (*vx)++;
-          else if(ps2x.Button(PSB_PAD_DOWN)&&((*vx)>=-20))  
-            (*vx)--;
-          else if((*vx)>0)
-            (*vx)--;
-          else if((*vx)<0)
-            (*vx)++;
-        if(ps2x.Button(PSB_PAD_RIGHT)&&((*Vw)>=-20))  
-            (*Vw)--;
-          else if(ps2x.Button(PSB_PAD_LEFT)&&((*Vw)<=20))  
-            (*Vw)++;
-          else if(((*Vw)<0)) 
-            (*Vw)++;
-          else if((*Vw)>0) 
-            (*Vw)--;
+        if (ps2x.Button(PSB_PAD_UP) && (*vx !=20))   
+            *vy = 20;
+          else if (ps2x.Button(PSB_PAD_DOWN) && (*vx != -20))
+            *vy = -20;
+          else if ( !ps2x.Button(PSB_PAD_UP) && !ps2x.Button(PSB_PAD_DOWN) && (*vx != 0))
+            *vy = 0;
+        /*if(ps2x.Button(PSB_PAD_UP)&&((*vx)==8))   
+            (*vy)=15;
+          else if(ps2x.Button(PSB_PAD_DOWN)&&((*vx)==-8))
+            (*vy)=-15;
+          else
+            (*vy)=0;*/
+        if (ps2x.Button(PSB_PAD_RIGHT) && (*Vw != -5))  
+            *Vw = -5;
+          else if (ps2x.Button(PSB_PAD_LEFT) && (*Vw != 5))  
+            *Vw = 5;
+          else if (!ps2x.Button(PSB_PAD_RIGHT) && !ps2x.Button(PSB_PAD_LEFT) && (*Vw != 0))
+            *Vw = 0;
         if(ps2x.Button(PSB_CROSS))   
             (*dj3)++;
           else if(ps2x.Button(PSB_TRIANGLE))  

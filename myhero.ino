@@ -1,5 +1,5 @@
 /*变量定义区*/
-int PS2_mode=1,Vx=0,Vy=0,dj1=45,dj2=45,dj3=45,Vw=0;
+int PS2_mode=0,Vx=0,Vy=0,dj1=45,dj2=45,dj3=45,Vw=0;
 int motor1 = 0, motor2 = 0, motor3 = 0, motor4 = 0;
 void setup(){
   PS2_Setup();

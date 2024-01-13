@@ -49,14 +49,10 @@ void Motor_Setup() {
 void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *motor4){
   //计算每个电机分速度
   int v1, v2, v3, v4;
-  v1 = 10*(vy - vx + w * ab);
-  v2 = 10*(vy + vx - w * ab);
-  v3 = 10*(vy - vx - w * ab);
-  v4 = 10*(vy + vx + w * ab);
-  // *motor1 = (uint8_t)(vy - vx + w * ab);
-  // *motor2 = (uint8_t)(vy + vx - w * ab);
-  // *motor3 = (uint8_t)(vy - vx - w * ab);
-  // *motor4 = (uint8_t)(vy + vx + w * ab);
+  v1 = 5*(vy - vx + w * ab);
+  v2 = 5*(vy + vx - w * ab);
+  v3 = 5*(vy - vx - w * ab);
+  v4 = 5*(vy + vx + w * ab);
   //控制
   if (v1 >= 0){
     *motor1 = v1;
@@ -109,5 +105,4 @@ void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *mot
     digitalWrite(wheel_rb_back, HIGH);
     analogWrite(wheel_rb_pwm, *motor4);
   }
-
 }
