@@ -1,24 +1,35 @@
 #include "Arduino.h"
-#define ab 1
 
 //电机供电口和pwm引脚定义
 //电机供电口和pwm引脚定义
 //正反转未知，待上机调试后若相反，宏定义两个引脚数字对换
-#define wheel_lf_forward 56
-#define wheel_lf_back 57
+
+#define wheel_lf_forward 57
+#define wheel_lf_back 56
 #define wheel_lf_pwm 12
 
-#define wheel_lb_forward 55
-#define wheel_lb_back 54
+#define wheel_lb_forward 54
+#define wheel_lb_back 55
 #define wheel_lb_pwm 13
 
-#define wheel_rf_forward 61
-#define wheel_rf_back 60
+#define wheel_rf_forward 60
+#define wheel_rf_back 61
 #define wheel_rf_pwm 10
 
 #define wheel_rb_forward 59
 #define wheel_rb_back 58
 #define wheel_rb_pwm 11
+
+/*
+void checkit(int *a)
+{
+  if(*a>=250)
+    *a=250;
+  else if(*a<=-250)
+    *a=-250;
+  return ;
+}
+*/
 
 void Motor_Setup() {
   //两个引脚全部先拉低电平，PWM降到0
@@ -46,13 +57,22 @@ void Motor_Setup() {
   digitalWrite(wheel_rb_back,LOW);
   analogWrite(wheel_rb_pwm,0);
 }
+
 void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *motor4){
   //计算每个电机分速度
   int v1, v2, v3, v4;
-  v1 = 5*(vy - vx + w * ab);
-  v2 = 5*(vy + vx - w * ab);
-  v3 = 5*(vy - vx - w * ab);
-  v4 = 5*(vy + vx + w * ab);
+  v1 = 5*(vy - vx + w);
+  v2 = 5*(vy + vx - w);
+  v3 = 5*(vy - vx - w);
+  v4 = 5*(vy + vx + w);
+
+  /*checkit(&v1);
+  checkit(&v2);
+  checkit(&v3);
+  checkit(&v4);*/
+  
+  //目前应该不需要，并且可能出现控制问题
+
   //控制
   if (v1 >= 0){
     *motor1 = v1;
