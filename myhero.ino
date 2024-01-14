@@ -25,14 +25,15 @@ void watch()//串口调试
 void setup(){
   PS2_Setup();
   Motor_Setup();
-  //Servo_Setup();
+  Servo_Setup();
 }
 
 void loop(){
   PS2_Loop(&PS2_mode,&Vx,&Vy,&servo_down,&servo_mid,&servo_up,&Vw);
   Motor_Loop(Vx,Vy,Vw,&motor1,&motor2,&motor3,&motor4);
   watch();
-  //Servo_Loop(servo_down,servo_mid,servo_up);
-  delay(15);
+  Servo_testLoop();
+
+  delay(10);
 }
 

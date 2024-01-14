@@ -20,17 +20,6 @@
 #define wheel_rb_back 58
 #define wheel_rb_pwm 11
 
-/*
-void checkit(int *a)
-{
-  if(*a>=250)
-    *a=250;
-  else if(*a<=-250)
-    *a=-250;
-  return ;
-}
-*/
-
 void Motor_Setup() {
   //两个引脚全部先拉低电平，PWM降到0
   pinMode(wheel_lf_forward,OUTPUT);
@@ -65,13 +54,6 @@ void Motor_Loop(int vx,int vy,int w,int *motor1,int *motor2,int *motor3,int *mot
   v2 = 5*(vy + vx - w);
   v3 = 5*(vy - vx - w);
   v4 = 5*(vy + vx + w);
-
-  /*checkit(&v1);
-  checkit(&v2);
-  checkit(&v3);
-  checkit(&v4);*/
-
-  //目前应该不需要，并且可能出现控制问题
 
   //控制
   if (v1 >= 0){
