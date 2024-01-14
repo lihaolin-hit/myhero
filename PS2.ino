@@ -50,24 +50,24 @@ void PS2_Loop(int *Control_mode, int *vx, int *vy, int *servo_down, int *servo_m
     else if (*vy == -26)
       (*vy)++;
 
-    if (ps2x.Button(PSB_PAD_UP))
-      (*servo_up)++;
-    else if (ps2x.Button(PSB_PAD_DOWN))
-      (*servo_up)--;
+    if (ps2x.Button(PSB_CROSS))
+      checkadd(servo_up,servo_up_max,servo_up_min,2);
+    else if (ps2x.Button(PSB_TRIANGLE))
+      checkadd(servo_up,servo_up_max,servo_up_min,-2);
     if (ps2x.Button(PSB_R1))
-      (*servo_mid)--;
+      checkadd(servo_mid,servo_mid_max,servo_mid_min,1);
     else if (ps2x.Button(PSB_R2))
-      (*servo_mid)++;
+      checkadd(servo_mid,servo_mid_max,servo_mid_min,-1);
     if (ps2x.Button(PSB_L1)) // 上部摇杆向下
-      (*servo_down)--;
+      checkadd(servo_down,servo_down_max,servo_down_min,-1);
     else if (ps2x.Button(PSB_L2))
-      (*servo_down)++;
+      checkadd(servo_down,servo_down_max,servo_down_min,1);
 
     // 角速度以逆时针方向为正
     if (ps2x.Button(PSB_PAD_RIGHT))
-      (*vw) = -8;
+      (*vw) = -10;
     else if (ps2x.Button(PSB_PAD_LEFT))
-      (*vw) = 8;
+      (*vw) = 10;
     else
       *vw = 0;
   }
@@ -82,27 +82,24 @@ void PS2_Loop(int *Control_mode, int *vx, int *vy, int *servo_down, int *servo_m
       *vy = 0;
 
     if (ps2x.Button(PSB_PAD_RIGHT))
-      (*vw) = -8;
+      (*vw) = -10;
     else if (ps2x.Button(PSB_PAD_LEFT))
-      (*vw) = 8;
+      (*vw) = 10;
     else
       *vw = 0;
 
     if (ps2x.Button(PSB_CROSS))
-      (*servo_up)++;
+      checkadd(servo_up,servo_up_max,servo_up_min,2);
     else if (ps2x.Button(PSB_TRIANGLE))
-      (*servo_up)--;
+      checkadd(servo_up,servo_up_max,servo_up_min,-2);
     if (ps2x.Button(PSB_R1))
-      (*servo_mid)--;
+      checkadd(servo_mid,servo_mid_max,servo_mid_min,1);
     else if (ps2x.Button(PSB_R2))
-      (*servo_mid)++;
+      checkadd(servo_mid,servo_mid_max,servo_mid_min,-1);
     if (ps2x.Button(PSB_L1)) // 上部摇杆向下
-      (*servo_down)--;
+      checkadd(servo_down,servo_down_max,servo_down_min,-1);
     else if (ps2x.Button(PSB_L2))
-      (*servo_down)++;
+      checkadd(servo_down,servo_down_max,servo_down_min,1);
   }
-  /*冗余
-      else if(ps2x.Button(PSB_CROSS)) ;
-      //if(ps2x.Button(PSB_TRIANGLE))   //主要混动模式
-  */
+
 }
